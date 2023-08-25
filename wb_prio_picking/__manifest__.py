@@ -11,7 +11,7 @@
 
     'author': "Wonderbrands",
     'website': "https://www.wonderbrands.co",
-    'category': 'Inventory',
+    'category': 'Tools',
     'version': '15.0',
 
     # any module necessary for this one to work correctly
@@ -23,10 +23,8 @@
 
     # always loaded
     'data': [
-        #'security/ir.model.access.csv',
         'views/stock_picking_views.xml',
-        'views/views.xml',
-        'views/templates.xml',
+        'report/ticket_prepicking.xml',
     ],
     # only loaded in demonstration mode
     # 'demo': [

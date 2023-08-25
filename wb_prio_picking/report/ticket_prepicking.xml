@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_ticket_prepicking" model="report.paperformat">
+            <field name="name">Ticket Prepicking</field>
+            <field name="header_spacing">0</field>
+            <field name="default">False</field>
+            <field name="format">custom</field>
+            <field name="page_height">25</field>
+            <field name="page_width">48</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">1</field>
+            <field name="header_line" eval="False"/>
+            <field name="dpi">120</field>
+        </record>
+
+        <record id="action_picking_label_report" model="ir.actions.report">
+            <field name="name">Pre Picking Ticket</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">wb_prio_picking.ticket_prepicking</field>
+            <field name="report_file">wb_prio_picking.ticket_prepicking</field>
+            <field name="paperformat_id" ref="wb_prio_picking.paperformat_ticket_prepicking"/>
+        </record>
+
+        <template id="ticket_prepicking">
+             <t t-foreach="docs" t-as="o">
+                <!--Esta t-foreach permite insertar el numero de etiquetas a imprimir-->
+                 <t t-set="total_print_labels" t-value="int(sum(line.product_uom_qty for line in o.move_ids_without_package))"/>
+                 <t t-foreach="range(total_print_labels)" t-as="count">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <div class="row justify-content-end mb16">
+                                <div class="col-4" name="right_box"/>`
+                                <div class="col-4" name="left_box"/>
+                                <div class="col-4" name="left_box"/>
+                            </div>
+                             <table style="text-align: center; width:100%;">
+                                    <tr >
+                                        <td><p><strong>Orden de Venta: </strong><span t-field="o.origin"/></p><p><strong>Marketplace: </strong><span t-field="o.sale_id.channel"/></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.origin, 600, 100)" style="width:450px;height:50px;" alt="Barcode"/></td>
+                                    </tr>
+                            </table>
+                        </div>
+                    </t>
+                 </t>
+             </t>
+        </template>
+    </data>
+</odoo>

@@ -1,19 +1,38 @@
 <odoo>
     <data>
-    <record  id="prio_picking_inherit" model="ir.ui.view">
-      <field name="name">prio_picking_inherit</field>
-      <field name="model">stock.picking</field>
-      <field name="inherit_id" ref="stock.view_picking_form"/>
-      <field name="arch" type="xml">
-          <!-- Agrega campos al formulario de Compra -->
-          <xpath expr="//field[@name='origin']" position="after">
-              <field name="pick_zone" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT') ]}"/>
-              <field name="sale_date"  attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT') ]}"/>
-              <field name="has_guide_number" invisible="1"/>
-              <field name="has_guide_number_index" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT') ]}"/>
-              <field name="is_colecta" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT') ]}"/>
-          </xpath>
-      </field>
-    </record>
+        <record  id="prio_picking_form_inherit" model="ir.ui.view">
+          <field name="name">prio_picking_form_inherit</field>
+          <field name="model">stock.picking</field>
+          <field name="inherit_id" ref="stock.view_picking_form"/>
+          <field name="arch" type="xml">
+              <!-- Agrega campos al formulario de Compra -->
+              <xpath expr="//field[@name='origin']" position="after">
+                  <field name="pick_up_date"  attrs="{'invisible': ['|','|', ('name','=ilike','OUT'), ('name','=ilike','/IN/'), ('name','=ilike','RET') ]}"/>
+                  <field name="pick_zone_index" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT')]}"/>
+                  <field name="is_colecta" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT') ]}"/>
+                  <field name="restocked" attrs="{'invisible': ['|','|', ('name','=ilike','OUT'), ('name','=ilike','PICK'), ('name','=ilike','RET')]}"/>
+                  <field name="fulfillment_type"  attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT')]}"/>
+              </xpath>
+              <xpath expr="//header" position="inside">
+                   <button name="prepicking_ticket" string="Ticket Prepick" groups="stock.group_stock_user" type="object" class="oe_highlight" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT')]}" />
+               </xpath>
+          </field>
+        </record>
+
+        <record  id="prio_picking_tree_inherit" model="ir.ui.view">
+          <field name="name">prio_picking_tree_inherit</field>
+          <field name="model">stock.picking</field>
+          <field name="inherit_id" ref="stock.vpicktree"/>
+          <field name="arch" type="xml">
+            <xpath expr="." position="inside">
+                <field name="fulfillment_type"/>
+                <field name="pick_up_date"/>
+                <field name="pick_zone_index"/>
+                <field name="has_shipping_label_index"/>
+                <field name="is_colecta"/>
+                <field name="restocked"/>
+            </xpath>
+         </field>
+        </record>
     </data>
 </odoo>
