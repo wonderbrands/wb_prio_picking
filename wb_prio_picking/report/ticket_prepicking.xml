@@ -30,24 +30,33 @@
              <t t-foreach="docs" t-as="o">
                 <!--Esta t-foreach permite insertar el numero de etiquetas a imprimir-->
                  <t t-set="total_print_labels" t-value="int(sum(line.product_uom_qty for line in o.move_ids_without_package))"/>
+                 <t t-set="current_label" t-value="1"/>
                  <t t-foreach="range(total_print_labels)" t-as="count">
                     <t t-call="web.basic_layout">
                         <div class="page">
                             <div class="row justify-content-end mb16">
                                 <div class="col-4" name="right_box"/>`
-                                <div class="col-4" name="left_box"/>
-                                <div class="col-4" name="left_box"/>
+                                <div class="col-3" name="left_box"/>
                             </div>
                              <table style="text-align: center; width:100%;">
-                                    <tr >
-                                        <td><p><strong>Orden de Venta: </strong><span t-field="o.origin"/></p><p><strong>Marketplace: </strong><span t-field="o.sale_id.channel"/></p></td>
+                                    <tr>
+                                        <td style="line-height: .5;">
+                                            <p><strong>Orden de Venta: </strong><span t-field="o.origin"/></p>
+                                            <p><strong><span t-field="o.company_id.name"/></strong></p>
+                                            <p><strong>Marketplace: </strong><span t-field="o.sale_id.channel"/></p>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.origin, 600, 100)" style="width:450px;height:50px;" alt="Barcode"/></td>
                                     </tr>
                             </table>
+                            <br/>
+                             <div style="text-align: right; width:100%;">
+                                <p><span t-esc="current_label"/>/<span t-esc="total_print_labels"/></p>
+                            </div>
                         </div>
                     </t>
+                     <t t-set="current_label" t-value="current_label + 1"/>
                  </t>
              </t>
         </template>

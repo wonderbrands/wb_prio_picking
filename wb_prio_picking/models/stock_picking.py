@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import base64
 from odoo import api, fields, models, SUPERUSER_ID
-from odoo import models, fields, api, _
-from odoo.exceptions import Warning
+from odoo import models, fields, api, exceptions, _
+from odoo.exceptions import Warning, ValidationError
 from datetime import datetime
 import time
 import logging
@@ -12,18 +12,18 @@ import requests
 
 class Picking(models.Model):
     _inherit = 'stock.picking'
+    _order = "priority desc, pick_up_date asc, id desc"
 
     pick_zone = fields.Many2one('stock.location', string='Zona de Pickeo',
                                 help='Field that allows to choose a stock location, this field is set from the first line of the stock move line',
                                 compute='_zone_assignment')  # Campo relacionado con el modelo de Ubicaciones
     pick_zone_index = fields.Many2one('stock.location', string='Zona de Pickeo',
-                                      help='Field that allows to choose a stock location, this field is set from the first line of the stock move line',
-                                      store=True)
+                                      help='Field that allows to choose a stock location, this field is set from the first line of the stock move line')
     has_shipping_label = fields.Boolean(string="Has shipping label compute",
                                         help='Field set true if the sale has a guide number by compute',
                                         compute='_get_sale_info')  #
     has_shipping_label_index = fields.Boolean(string="Has shipping label?",
-                                              help='Field set true if the sale has a guide number')  #
+                                              help='Field set true if the sale has a guide number',default=False)  #
     is_colecta = fields.Boolean(string="Is Colecta",
                                 help='This field shows if the pick comes from a "colecta Meli order".')
     priority_check = fields.Boolean(string="Colecta script check",
@@ -33,7 +33,7 @@ class Picking(models.Model):
                                    help='Field that show the Pick-Up date')  # Este campo se le asignara un valor desde el script
     # campo nuevo 25/08/2023
     restocked = fields.Boolean(string="Es Resurtido?",
-                               help='Este campo permite identificar los movimientos de resurtido a marketplace')
+                               help='Este campo permite identificar los movimientos de resurtido a marketplace',default=False )
     fulfillment_type = fields.Selection([
         ('fbf', 'Flex'),
         ('mix', 'Mix'),
@@ -45,7 +45,7 @@ class Picking(models.Model):
     @api.depends('sale_id')
     def _get_sale_info(self):
         for rec in self:
-            if '/PICK/' or '/INT/' in rec.name:
+            if 'PICK' in rec.name or 'INT' in rec.name:
                 if rec.sale_id != False:
                     if rec.sale_id.yuju_carrier_tracking_ref or rec.restocked:
                         rec.has_shipping_label = True
@@ -88,3 +88,11 @@ class Picking(models.Model):
     def prepicking_ticket(self):
         self.ensure_one()
         return self.env.ref('wb_prio_picking.action_picking_label_report').report_action(self)
+
+    @api.constrains('move_line_ids_without_package')
+    def check_quantity_done(self):
+        for picking in self:
+            if '/OUT/' in picking.name:
+                for move in picking.move_line_ids_without_package:
+                    if move.qty_done > move.product_uom_qty:
+                        raise exceptions.ValidationError("La cantidad hecha debe ser igual a la cantidad original del pick, favor de revisar su conteo de productos a despachar.")

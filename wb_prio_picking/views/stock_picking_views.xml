@@ -7,7 +7,9 @@
           <field name="arch" type="xml">
               <!-- Agrega campos al formulario de Compra -->
               <xpath expr="//field[@name='origin']" position="after">
+                  <field name="sale_id" />
                   <field name="pick_up_date"  attrs="{'invisible': ['|','|', ('name','=ilike','OUT'), ('name','=ilike','/IN/'), ('name','=ilike','RET') ]}"/>
+                  <field name="pick_zone" invisible="1"/>
                   <field name="pick_zone_index" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT')]}"/>
                   <field name="is_colecta" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT') ]}"/>
                   <field name="restocked" attrs="{'invisible': ['|','|', ('name','=ilike','OUT'), ('name','=ilike','PICK'), ('name','=ilike','RET')]}"/>
