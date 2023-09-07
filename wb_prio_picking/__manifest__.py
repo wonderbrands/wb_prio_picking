@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Modificaciones para la priorizacion de despacho de picks",
+    'name': "Modulo de priorizacion de picks para Somos Reyes",
 
     'summary': """
-        Modificaciones para la priorizacion de despacho de picks""",
+        Modulo de priorizacion de picks para Somos Reyes, validacion de piezas para despacho de out, Zonas de pickeo
+        """,
 
     'description': """
         Este módulo agrega diferentes modificaciones y campos al formulario de traslados
@@ -12,7 +13,7 @@
     'author': "Wonderbrands",
     'website': "https://www.wonderbrands.co",
     'category': 'Tools',
-    'version': '15.1',
+    'version': '15.1.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base',
