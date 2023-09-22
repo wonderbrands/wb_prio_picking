@@ -27,8 +27,4 @@
         'views/stock_picking_views.xml',
         'report/ticket_prepicking.xml',
     ],
-    # only loaded in demonstration mode
-    # 'demo': [
-    #     'demo/demo.xml',
-    # ],
 }

@@ -88,6 +88,14 @@ class Picking(models.Model):
     def prepicking_ticket(self):
         self.ensure_one()
         return self.env.ref('wb_prio_picking.action_picking_label_report').report_action(self)
+    #
+    # #Print "Packing List" report
+    # def report_outs(self):
+    #     self.ensure_one()
+    #     _logger = logging.getLogger(__name__)
+    #     _logger.info('LISTA DE EMPAQUE PICK %s', self.name)
+    #
+    #     return self.env.ref('wb_prio_picking.action_shipping_label_report').report_action(self)
 
     @api.constrains('move_line_ids_without_package')
     def check_quantity_done(self):
