@@ -12,7 +12,7 @@ import requests
 
 class Picking(models.Model):
     _inherit = 'stock.picking'
-    _order = "priority desc, pick_up_date asc, id desc"
+    _order = "priority desc, pick_up_date asc, prio_ful_type asc"
 
     pick_zone = fields.Many2one('stock.location', string='Zona de Pickeo',
                                 help='Field that allows to choose a stock location, this field is set from the first line of the stock move line',
@@ -40,6 +40,8 @@ class Picking(models.Model):
         ('fbm', 'Seller'),
         ('fbc', 'Full'),
     ], string="Fulfillment", compute="_get_sale_info")
+
+    prio_ful_type = fields.Integer(string="Fulfillment Prio")
 
     # Funcion para revisar si cuenta con numero de guia la venta.
     @api.depends('sale_id')
@@ -88,14 +90,6 @@ class Picking(models.Model):
     def prepicking_ticket(self):
         self.ensure_one()
         return self.env.ref('wb_prio_picking.action_picking_label_report').report_action(self)
-    #
-    # #Print "Packing List" report
-    # def report_outs(self):
-    #     self.ensure_one()
-    #     _logger = logging.getLogger(__name__)
-    #     _logger.info('LISTA DE EMPAQUE PICK %s', self.name)
-    #
-    #     return self.env.ref('wb_prio_picking.action_shipping_label_report').report_action(self)
 
     @api.constrains('move_line_ids_without_package')
     def check_quantity_done(self):
