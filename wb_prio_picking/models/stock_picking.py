@@ -12,7 +12,7 @@ import requests
 
 class Picking(models.Model):
     _inherit = 'stock.picking'
-    _order = "priority desc, pick_up_date asc, prio_ful_type asc"
+    _order = "pick_up_date asc, prio_ful_type asc"
 
     pick_zone = fields.Many2one('stock.location', string='Zona de Pickeo',
                                 help='Field that allows to choose a stock location, this field is set from the first line of the stock move line',
@@ -41,7 +41,7 @@ class Picking(models.Model):
         ('fbc', 'Full'),
     ], string="Fulfillment", compute="_get_sale_info")
 
-    prio_ful_type = fields.Integer(string="Fulfillment Prio")
+    prio_ful_type = fields.Integer(string="Prioridad logistica", default=5)
 
     # Funcion para revisar si cuenta con numero de guia la venta.
     @api.depends('sale_id')
@@ -94,7 +94,7 @@ class Picking(models.Model):
     @api.constrains('move_line_ids_without_package')
     def check_quantity_done(self):
         for picking in self:
-            if '/OUT/' in picking.name:
+            if '/VALPICK/' in picking.name:
                 for move in picking.move_line_ids_without_package:
                     if move.qty_done > move.product_uom_qty:
                         raise exceptions.ValidationError("La cantidad hecha debe ser igual a la cantidad original del pick, favor de revisar su conteo de productos a despachar.")
