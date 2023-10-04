@@ -19,7 +19,8 @@
     'depends': ['base',
                 'sale',
                 'stock',
-                'madkting'],
+                'madkting',
+                'product'],
 
     # always loaded
     'data': [

@@ -41,8 +41,15 @@ class Picking(models.Model):
         ('fbc', 'Full'),
     ], string="Fulfillment", compute="_get_sale_info")
 
-    prio_ful_type = fields.Integer(string="Prioridad logistica", default=5)
-
+    # prio_ful_type = fields.Integer(string="Prioridad logistica", default=5)
+    prio_ful_type = fields.Selection([
+        ('1', 'Flex'),
+        ('2', 'Ezship'),
+        ('3', 'Onsite'),
+        ('4', 'Same/next day'),
+        ('5', 'Colecta'),
+        ('6', 'Sin prioridad'),
+    ], string="Prioridad logistica", default='6')
     # Funcion para revisar si cuenta con numero de guia la venta.
     @api.depends('sale_id')
     def _get_sale_info(self):
