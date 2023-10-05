@@ -16,7 +16,7 @@ class Picking(models.Model):
 
     pick_zone = fields.Many2one('stock.location', string='Zona de Pickeo',
                                 help='Field that allows to choose a stock location, this field is set from the first line of the stock move line',
-                                compute='_zone_assignment')  # Campo relacionado con el modelo de Ubicaciones
+                                compute='_zone_assignment')
     pick_zone_index = fields.Many2one('stock.location', string='Zona de Pickeo',
                                       help='Field that allows to choose a stock location, this field is set from the first line of the stock move line')
     has_shipping_label = fields.Boolean(string="Has shipping label compute",
@@ -35,8 +35,6 @@ class Picking(models.Model):
     restocked = fields.Boolean(string="Es Resurtido?",
                                help='Este campo permite identificar los movimientos de resurtido a marketplace',default=False )
 
-
-    # prio_ful_type = fields.Integer(string="Prioridad logistica", default=5)
     prio_ful_type = fields.Selection([
         ('1', 'Flex'),
         ('2', 'Ezship'),
@@ -49,8 +47,8 @@ class Picking(models.Model):
     @api.depends('sale_id')
     def _get_sale_info(self):
         for rec in self:
-            if 'PICK' in rec.name or 'INT' in rec.name:
-                if rec.sale_id != False:
+            if '/PICK/' in rec.name or '/INT/' in rec.name:
+                if rec.sale_id:
                     if rec.sale_id.yuju_carrier_tracking_ref or rec.restocked:
                         rec.has_shipping_label = True
                         rec.has_shipping_label_index = rec.has_shipping_label
