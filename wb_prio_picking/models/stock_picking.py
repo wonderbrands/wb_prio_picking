@@ -34,12 +34,7 @@ class Picking(models.Model):
     # campo nuevo 25/08/2023
     restocked = fields.Boolean(string="Es Resurtido?",
                                help='Este campo permite identificar los movimientos de resurtido a marketplace',default=False )
-    fulfillment_type = fields.Selection([
-        ('fbf', 'Flex'),
-        ('mix', 'Mix'),
-        ('fbm', 'Seller'),
-        ('fbc', 'Full'),
-    ], string="Fulfillment", compute="_get_sale_info")
+
 
     # prio_ful_type = fields.Integer(string="Prioridad logistica", default=5)
     prio_ful_type = fields.Selection([
@@ -63,18 +58,11 @@ class Picking(models.Model):
                         rec.has_shipping_label = False
                         rec.restocked = False
                         rec.has_shipping_label_index = rec.has_shipping_label
-
-                    if rec.sale_id.fulfillment:
-                        rec.fulfillment_type = rec.sale_id.fulfillment
-                    else:
-                        rec.fulfillment_type = None
                 else:
-                    rec.fulfillment_type = None
                     rec.has_shipping_label = False
                     rec.has_shipping_label_index = rec.has_shipping_label
             else:
                 rec.has_shipping_label = False
-                rec.fulfillment_type = None
                 rec.has_shipping_label_index = rec.has_shipping_label
 
     # Funcion para jalar la zona de pickeo.

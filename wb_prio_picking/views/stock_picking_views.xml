@@ -8,12 +8,11 @@
               <!-- Agrega campos al formulario de Compra -->
               <xpath expr="//field[@name='origin']" position="after">
                   <field name="sale_id" />
-                  <field name="pick_up_date"  attrs="{'invisible': ['|','|', ('name','=ilike','OUT'), ('name','=ilike','/IN/'), ('name','=ilike','RET') ]}"/>
-                  <field name="pick_zone" invisible="1"/>
-                  <field name="pick_zone_index" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT')]}"/>
-                  <field name="is_colecta" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT') ]}"/>
-                  <field name="restocked" attrs="{'invisible': ['|','|', ('name','=ilike','OUT'), ('name','=ilike','PICK'), ('name','=ilike','RET')]}"/>
-                  <field name="fulfillment_type"  attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT')]}"/>
+                  <field name="pick_up_date" attrs="{'invisible': ['|','|', ('name','=ilike','/OUT/'), ('name','=ilike','/IN/'), ('name','=ilike','/RET/') ]}"/>
+                  <field name="pick_zone" invisible='1' />
+                  <field name="pick_zone_index" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','/OUT/'), ('name','=ilike','/IN/'), ('name','=ilike','/RET/'), ('name','=ilike','/INT/')]}"/>
+                  <field name="is_colecta" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','/OUT/'), ('name','=ilike','/IN/'), ('name','=ilike','/RET/'), ('name','=ilike','/INT/') ]}"/>
+                  <field name="restocked" attrs="{'invisible': ['|','|', ('name','=ilike','/OUT/'), ('name','=ilike','/PICK/'), ('name','=ilike','/RET/')]}"/>
                   <field name="prio_ful_type"/>
               </xpath>
               <xpath expr="//header" position="inside">
@@ -28,9 +27,9 @@
           <field name="inherit_id" ref="stock.vpicktree"/>
           <field name="arch" type="xml">
             <xpath expr="." position="inside">
-                <field name="fulfillment_type"/>
                 <field name="pick_up_date"/>
-                <field name="pick_zone_index"/>
+                <field name="prio_ful_type"/>
+                <field name="pick_zone"/>
                 <field name="has_shipping_label_index"/>
                 <field name="is_colecta"/>
                 <field name="restocked"/>
