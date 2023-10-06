@@ -43,6 +43,9 @@ class Picking(models.Model):
         ('5', 'Colecta'),
         ('6', 'Sin prioridad'),
     ], string="Prioridad logistica", default='6')
+
+    shipping_number = fields.Char(string="Numero de Guia",related='sale_id.yuju_carrier_tracking_ref', readonly=True)
+
     # Funcion para revisar si cuenta con numero de guia la venta.
     @api.depends('sale_id')
     def _get_sale_info(self):
