@@ -31,6 +31,8 @@ class Picking(models.Model):
     # campo nuevo 31/07/2023
     pick_up_date = fields.Datetime(string="Pick-Up Date",
                                    help='Field that show the Pick-Up date')  # Este campo se le asignara un valor desde el script
+    # campo nuevo 06/12/2023
+    vessel_id = fields.Integer(string="Vessel ID", help='Campo para identificar el contenedor de este este OUT')
     # campo nuevo 25/08/2023
     restocked = fields.Boolean(string="Es Resurtido?",
                                help='Este campo permite identificar los movimientos de resurtido a marketplace',default=False )
