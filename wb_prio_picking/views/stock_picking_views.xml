@@ -14,7 +14,7 @@
                   <field name="is_colecta" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','/OUT/'), ('name','=ilike','/IN/'), ('name','=ilike','/RET/'), ('name','=ilike','/INT/') ]}"/>
                   <field name="restocked" attrs="{'invisible': ['|','|', ('name','=ilike','/OUT/'), ('name','=ilike','/PICK/'), ('name','=ilike','/RET/')]}"/>
                   <field name="prio_ful_type"/>
-                  <field name="vessel_id" attrs="{'invisible': [('name', 'not ilike', 'OUT')]}"/>
+                  <field name="vessel_id" readonly="1" attrs="{'invisible': ['|','|', '|', ('name','=ilike','/PICK/'), ('name','=ilike','/IN/'), ('name','=ilike','/RET/'), ('name','=ilike','/INT/') ]}"/>
               </xpath>
               <xpath expr="//header" position="inside">
                    <button name="prepicking_ticket" string="Ticket Prepick" groups="stock.group_stock_user" type="object" class="oe_highlight" attrs="{'invisible': ['|','|', '|', ('name','=ilike','OUT'), ('name','=ilike','IN'), ('name','=ilike','RET'), ('name','=ilike','INT')]}" />
