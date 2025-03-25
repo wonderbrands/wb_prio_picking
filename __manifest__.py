@@ -13,7 +13,7 @@
     'author': "Wonderbrands",
     'website': "https://www.wonderbrands.co",
     'category': 'Tools',
-    'version': '15.1.0',
+    'version': '18.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base',
