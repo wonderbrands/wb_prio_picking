@@ -2,7 +2,6 @@
 import base64
 from odoo import api, fields, models, SUPERUSER_ID
 from odoo import models, fields, api, exceptions, _
-from odoo.exceptions import Warning, ValidationError
 from datetime import datetime
 import time
 import logging
